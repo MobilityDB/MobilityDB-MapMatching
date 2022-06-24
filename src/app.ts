@@ -1,4 +1,6 @@
 import 'reflect-metadata';
+import fs from 'fs';
+import path from 'path';
 import { defaultMetadataStorage } from 'class-transformer';
 import { validationMetadatasToSchemas } from 'class-validator-jsonschema';
 import compression from 'compression';
@@ -29,6 +31,9 @@ class App {
     this.initializeRoutes(Controllers);
     this.initializeSwagger(Controllers);
     this.initializeErrorHandling();
+
+    process.on('SIGTERM', this.deleteTempFiles);
+    process.on('SIGINT', this.deleteTempFiles);
   }
 
   public listen() {
@@ -99,6 +104,23 @@ class App {
 
   private initializeErrorHandling() {
     this.app.use(errorMiddleware);
+  }
+
+  private deleteTempFiles() {
+    const tmpDir = 'tmp';
+    fs.readdir(tmpDir, (err, files) => {
+      if (err) throw err;
+
+      for (const file of files) {
+        fs.unlink(path.join(tmpDir, file), err => {
+          if (err) throw err;
+        });
+      }
+    });
+
+    logger.info('Removing files in the temporary directory.');
+
+    process.exit();
   }
 }
 

@@ -1,7 +1,6 @@
 import request from 'supertest';
 import App from '@/app';
 import { MatcherController } from '@controllers/matcher.controller';
-import { MatcherDto } from '@dtos/matcher.dto';
 import { Matcher } from '@interfaces/matcher.interface';
 
 afterAll(async () => {
