@@ -1,9 +1,10 @@
 import { HttpException } from '@exceptions/HttpException';
-import { Matcher, ValhallaMatchedPoint } from '@/interfaces/matcher.interface';
+import { Matcher, ValhallaMatchedPoint, ValhallaRequestBody } from '@/interfaces/matcher.interface';
 import { readFileSync } from 'fs';
 import fileUpload from 'express-fileupload';
 import GpxParser, { Track, Point } from 'gpxparser';
 import axios from 'axios';
+import { logger } from '@/utils/logger';
 
 type UploadedFile = fileUpload.UploadedFile;
 
@@ -23,7 +24,7 @@ class MatcherService {
       });
     });
 
-    const req_body = {
+    const reqBody: ValhallaRequestBody = {
       shape: matcher.gpsPoints,
       search_radius: 300,
       shape_match: 'map_snap',
@@ -32,16 +33,20 @@ class MatcherService {
       use_timestamps: true,
     };
 
-    await axios
-      .post('127.0.0.1:8002/trace_attributes', req_body)
-      .then(res => {
-        res.data.matched_points.forEach((matchedPoint: ValhallaMatchedPoint) => {
-          matcher.matchedGpsPoints.push(matchedPoint);
-        });
-      })
-      .catch(new HttpException(500, 'Server error'));
+    try {
+      const { data } = await axios.post<ValhallaRequestBody, any>('http://127.0.0.1:8002/trace_attributes', reqBody);
 
-    return matcher;
+      data.matched_points.forEach((matchedPoint: ValhallaMatchedPoint) => {
+        matcher.matchedGpsPoints.push(matchedPoint);
+      });
+
+      logger.debug('DEBUG MESSAGE');
+
+      return matcher;
+    } catch (error) {
+      logger.error(error);
+      return new HttpException(500, 'Server error');
+    }
   }
 }
 

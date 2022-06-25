@@ -1,4 +1,4 @@
-import { Controller, Body, Get, Post, HttpCode, Req, UploadedFile } from 'routing-controllers';
+import { Controller, Post, HttpCode, Req, UploadedFile } from 'routing-controllers';
 import { OpenAPI } from 'routing-controllers-openapi';
 import { Matcher } from '@/interfaces/matcher.interface';
 import MatcherService from '@/services/matcher.service';
@@ -13,7 +13,6 @@ export class MatcherController {
   @Post('/matcher')
   @HttpCode(200)
   @OpenAPI({ summary: 'Match given GPS coordinates' })
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async matchGPSPoints() {
     return { data: 'Here is your matched points', message: 'matched' };
   }
