@@ -1,5 +1,32 @@
 # Map-Matching as service
 
+A Map-Matching service aimed to match GPS coordinates with road network and more. This service uses Valhalla as routing engine. Essentially, this service is an API which uses the HTTP client of Valhalla to match GPS coordinates.
+
+This project is related to a master thesis which is not complete yet and is a work in progress. You can find the latest version of the master thesis [here](https://drive.google.com/file/d/1h54SVc16ttXQiQvIjz5q-omMALyukh2U/view?usp=sharing). The thesis is written by [Mohammadreza Amini](https://mohammadrezaamini.netlify.com) with supervision of [Prof. Mahmoud Sakr](https://cs.ulb.ac.be/members/mahmoud/).
+
+## Run the service
+
+Here are some important points before running the service:
+- To run the service, one must first make sure that a Valhalla server is running on port 8002. The installation procedure for Valhalla is detailed down below.
+- It must also be ensured that the environment variables are properly set. For this, there are two example files (`.env.production.local.example` and `.env.development.local.example`). Make sure that these files are filled correctly with the desired configuration (port number, logs directory, etc.) and are renamed to `.env.production.local` and `.env.development.local`.
+
+```bash
+# Install dependencies
+npm install
+
+# Run the service in development environment
+npm run dev
+
+# Run the service in production environment
+npm run start
+```
+
+## Use the service
+
+> To see a documentation of the API with available endpoint, a GET request can be sent to `/api-docs` endpoint.
+
+A user interface is coming in near future that facilitates the interaction with the service. In the meantime, an intermediary program should be used to interact with the server. Programs like [Postman](https://www.postman.com/) and [Insomnia](https://insomnia.rest/) will let users to send HTTP requests and receive response. For example, to send a GPX file to this endpoint with Postman program, you can follow [this tutorial](https://makolyte.com/how-to-upload-a-file-with-postman/). A GPX file could be uploaded to `/matcher/gpxFile` endpoint and the service will return matched GPS points to route found in the file.
+
 ## Valhalla installation
 
 Installation from source always introduces a lot of problems with dependencies and is not an easy process. This is why we will be using a docker container ([Valhalla Docker image by GIS • OPS
@@ -22,3 +49,6 @@ Installation from source always introduces a lot of problems with dependencies a
   docker attach valhalla_gis-ops
   ```
 - We can attach another volume to this container at any time and this container can contain, for example, a map of another region. This make this approach a really flexible approach.
+
+## License
+This project is licensed under the MIT license.
