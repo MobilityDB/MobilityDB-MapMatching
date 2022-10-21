@@ -23,7 +23,7 @@ class MatcherController extends Controller {
   }
 
   public match = async (req: NextApiRequest, res: NextApiResponse) => {
-    const form = new formidable.IncomingForm({ keepExtensions: true })
+    const form = formidable({ keepExtensions: true })
     form.parse(req, async (err, fields, files) => {
       if (err) {
         this.handleError(res, err)
@@ -32,7 +32,7 @@ class MatcherController extends Controller {
 
       const matcher: Matcher = { gpsPoints: [], matchedGpsPoints: [] }
 
-      const filePath: string = files.file.filepath
+      const filePath: string = files.file[0].filepath
 
       const file: string = readFileSync(filePath, 'utf-8')
 
