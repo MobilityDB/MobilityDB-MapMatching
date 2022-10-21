@@ -22,3 +22,14 @@ export interface ValhallaRequestBody {
   format: string
   use_timestamps: boolean
 }
+
+export interface MatcherContext {
+  matchedRes: Matcher
+  uploadGpxFile: (file: File) => void
+}
+
+export interface MatcherResponse {
+  code: number
+  error: boolean
+  payload: Matcher
+}
