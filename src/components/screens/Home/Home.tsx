@@ -9,10 +9,13 @@ export default function Home() {
 
   return (
     <main>
-      <UploadFile />
-
-      <div id="map">
-        <MapWithNoSSR />
+      <div className="mx-5 flex h-screen flex-col">
+        <div className="flex-none">
+          <UploadFile />
+        </div>
+        <div className="flex-1 w-11/12 m-auto my-5">
+          <MapWithNoSSR />
+        </div>
       </div>
     </main>
   )

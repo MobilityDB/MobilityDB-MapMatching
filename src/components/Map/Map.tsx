@@ -11,6 +11,8 @@ import {
 } from '@/interfaces/matcher.interface'
 import { Point } from 'leaflet'
 
+import styles from './styles.module.css'
+
 export const Recenter = ({ lat, lng }) => {
   const map = useMap()
   useEffect(() => {
@@ -47,6 +49,7 @@ const Map = () => {
       center={[50.378472, 14.970598]}
       zoom={60}
       scrollWheelZoom={true}
+      className={`${styles.map_container} border-4 border-gray-500`}
     >
       <Recenter lat={centerPos[0]} lng={centerPos[1]} />
       <TileLayer

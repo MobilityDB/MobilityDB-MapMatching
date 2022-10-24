@@ -1,6 +1,6 @@
 import { NextPage } from 'next'
 import { FunctionComponent, Fragment, PropsWithChildren, useMemo } from 'react'
-import { Head } from '@/components/base'
+import Head from '@/components/base/Head'
 import { SITE_NAME } from '@/utils/config'
 
 export interface Props {
@@ -9,7 +9,7 @@ export interface Props {
 
 export type UnknownProps = Record<string, unknown>
 
-const Layout: FunctionComponent<PropsWithChildren<Props>> = (props) => {
+const PageLayout: FunctionComponent<PropsWithChildren<Props>> = (props) => {
   const { children, title: titleProps } = props
   const title = titleProps?.includes(SITE_NAME)
     ? titleProps
@@ -43,12 +43,12 @@ export const withPageLayout = <T extends UnknownProps>(
     }, [layoutProps, pageProps])
 
     return (
-      <Layout {...layoutPropsWithPageProps}>
+      <PageLayout {...layoutPropsWithPageProps}>
         <PageComponent {...pageProps} />
-      </Layout>
+      </PageLayout>
     )
   }
   return LayoutPage
 }
 
-export default Layout
+export default PageLayout
